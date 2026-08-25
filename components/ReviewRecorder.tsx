@@ -38,6 +38,7 @@ export default function ReviewRecorder() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [videoMuted, setVideoMuted] = useState(false);
 
   const [webcamEnabled, setWebcamEnabled] = useState(false);
   const [webcamCorner, setWebcamCorner] = useState<Corner>("top-right");
@@ -400,6 +401,7 @@ export default function ReviewRecorder() {
                 ref={videoRef}
                 src={videoUrl}
                 controls={false}
+                muted={videoMuted}
                 className="h-full w-full object-contain"
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
@@ -476,6 +478,14 @@ export default function ReviewRecorder() {
                 className="rounded-md border border-stone-300 px-3 py-1.5 text-sm"
               >
                 Frame ▶
+              </button>
+              <button
+                onClick={() => setVideoMuted((m) => !m)}
+                className={`rounded-md px-3 py-1.5 text-sm ${
+                  videoMuted ? "bg-stone-900 text-white" : "border border-stone-300"
+                }`}
+              >
+                {videoMuted ? "Video muted" : "Mute video"}
               </button>
               <div className="mx-2 h-5 w-px bg-stone-200" />
               <span className="text-xs text-stone-500">Speed</span>
@@ -598,7 +608,9 @@ export default function ReviewRecorder() {
               )}
               <span className="text-xs text-stone-500">
                 Records the video, your drawings, your mic, and your webcam
-                (if enabled) into one file.
+                (if enabled) into one file. Muting the video only changes what
+                you hear while working — it never records the original clip&apos;s
+                sound either way.
               </span>
               {micError && <span className="text-xs text-red-600">{micError}</span>}
             </div>
